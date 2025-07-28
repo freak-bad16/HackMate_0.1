@@ -1,0 +1,28 @@
+# Ignore build outputs
+dist/
+build/
+
+# Ignore dependencies
+node_modules/
+/.vscode
+
+# Ignore environment files
+.env
+
+# Ignore lock files
+package-lock.json
+yarn.lock
+
+# Ignore specific config files
+.prettierrc
+.prettierignore
+
+# Ignore all minified files
+*.min.js
+
+# Ignore images and other binary files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
