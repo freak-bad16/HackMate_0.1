@@ -13,7 +13,10 @@ const joinRequestSchema = new mongoose.Schema(
 			enum: ["pending", "accepted", "rejected"],
 			default: "pending",
 		},
-		message: String,
+		message: {
+			type: String,
+			require: true
+		},
 	},
 	{ timestamps: true }
 );
