@@ -16,6 +16,7 @@ const roomSchema = new mongoose.Schema(
 		joinRequests: [
 			{ type: mongoose.Schema.Types.ObjectId, ref: "JoinRequest" },
 		],
+		members: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 	},
 	{ timestamps: true }
 );

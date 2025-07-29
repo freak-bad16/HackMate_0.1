@@ -8,7 +8,7 @@ const notificationSchema = new mongoose.Schema(
 			required: true,
 		}, // user who gets this
 		sender: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // who triggered the notification
-		catogery: {
+		category: {
 			type: String,
 			enum: ["join_request", "message", "room_update", "comment"],
 			required: true,

@@ -33,7 +33,7 @@ export const createRoom = asyncHandler(async (req, res) => {
 });
 
 export const updateRoom = asyncHandler(async (req, res) => {
-    const roomId = req.params.id;
+    const roomId = req.params.roomId;
 
     if (!mongoose.Types.ObjectId.isValid(roomId)) {
         throw new ApiError(400, "Invalid room ID");
@@ -70,7 +70,7 @@ export const updateRoom = asyncHandler(async (req, res) => {
 });
 
 export const likeRoom = asyncHandler(async (req, res) => {
-    const roomId = req.params.id;
+    const roomId = req.params.roomId;
 
     if (!mongoose.Types.ObjectId.isValid(roomId)) {
         throw new ApiError(400, "Invalid room ID");
@@ -114,7 +114,7 @@ export const getAllRoomOfUser = asyncHandler(async (req, res) => {
 });
 
 export const doComment = asyncHandler(async (req, res) => {
-    const roomId = req.params.id;
+    const roomId = req.params.roomId;
 
     if (!mongoose.Types.ObjectId.isValid(roomId)) {
         throw new ApiError(400, "Invalid room ID");
@@ -156,7 +156,7 @@ export const doComment = asyncHandler(async (req, res) => {
 })
 
 export const deleteRoom = asyncHandler(async (req, res) => {
-    const roomId = req.params.id;
+    const roomId = req.params.roomId;
 
     if (!mongoose.Types.ObjectId.isValid(roomId)) {
         throw new ApiError(400, "Invalid room ID");
