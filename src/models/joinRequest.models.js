@@ -15,7 +15,7 @@ const joinRequestSchema = new mongoose.Schema(
 		},
 		message: {
 			type: String,
-			require: true
+			require: true,
 		},
 	},
 	{ timestamps: true }

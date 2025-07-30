@@ -3,10 +3,10 @@ import {
 	createRoom,
 	updateRoom,
 	deleteRoom,
-    likeRoom,
-    getAllRoom,
-    getAllRoomOfUser,
-    doComment,
+	likeRoom,
+	getAllRoom,
+	getAllRoomOfUser,
+	doComment,
 } from "../controllers/room.controllers.js";
 import { verifyJWT } from "../middlewares/auth.middlewares.js";
 
