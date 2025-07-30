@@ -1,31 +1,11 @@
 {
-	"name": "server",
-	"version": "1.0.0",
-	"main": "index.js",
-	"scripts": {
-		"start": "node src/index.js",
-		"dev": "nodemon src/index.js",
-		"format": "prettier --write ."
-	},
-	"type": "module",
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"description": "",
-	"devDependencies": {
-		"nodemon": "^3.1.10",
-		"prettier": "^3.6.2"
-	},
-	"dependencies": {
-		"bcrypt": "^6.0.0",
-		"cloudinary": "^2.7.0",
-		"cookie-parser": "^1.4.7",
-		"cors": "^2.8.5",
-		"dotenv": "^17.2.1",
-		"ejs": "^3.1.10",
-		"express": "^5.1.0",
-		"jsonwebtoken": "^9.0.2",
-		"mongoose": "^8.16.5",
-		"multer": "^2.0.2"
-	}
+  "name": "your-project-name",
+  "scripts": {
+    "Frontend": "cd Frontend && npm run dev",
+    "Backend": "cd Backend && nodemon src/index.js",
+    "dev": "concurrently \"npm run Backend\" \"npm run Frontend\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
 }
