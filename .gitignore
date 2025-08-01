@@ -3,6 +3,14 @@
 
 docs.txt
 
+node_modules/
+Frontend/node_modules/
+Backend/node_modules/
+.env
+dist/
+build/
+
+
 ### Node ###
 # Logs
 logs
