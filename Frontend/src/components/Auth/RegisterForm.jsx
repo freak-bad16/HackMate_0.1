@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
+import { apiJson } from "../../lib/api";
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -8,8 +11,10 @@ const RegisterForm = () => {
     password: "",
   });
 
-  const [message, setMessage] = useState(null); // message from backend
-  const [isSuccess, setIsSuccess] = useState(false); // track success/failure
+  const [message, setMessage] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const { loading } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,40 +24,24 @@ const RegisterForm = () => {
     }));
   };
 
-  const sendData = () => {
-  fetch("http://localhost:3000/api/v1/auth/register", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(formData),
-  })
-    .then(async (response) => {
-      const data = await response.json();
-
-      // Always show the message from backend
-      setMessage(data.message || "Unexpected response");
-
-      // Determine success based on HTTP status or backend field
-      setIsSuccess(response.ok && data.success);
-
-      if (response.ok && data.success) {
-        // Reset form on success
-        setFormData({
-          userName: "",
-          email: "",
-          fullName: "",
-          password: "",
-        });
-      }
-    })
-    .catch((error) => {
-      // Only fires on network error
-      console.error("Network error:", error);
-      setMessage("Network error. Please try again later.");
+  const sendData = async () => {
+    // Backend register route uses multer upload.fields; send multipart/form-data
+    const fd = new FormData();
+    fd.append("userName", formData.userName);
+    fd.append("email", formData.email);
+    fd.append("fullName", formData.fullName);
+    fd.append("password", formData.password);
+    const { ok, data } = await apiJson("/auth/register", { method: "POST", body: fd });
+    if (ok) {
+      setIsSuccess(true);
+      setMessage(data?.message || "Registration successful. You can login now.");
+      setFormData({ userName: "", email: "", fullName: "", password: "" });
+      navigate("/login");
+    } else {
       setIsSuccess(false);
-    });
-};
+      setMessage(data?.message || "Registration failed");
+    }
+  };
 
 
   const handleSubmit = (e) => {
@@ -113,9 +102,10 @@ const RegisterForm = () => {
 
       <button
         type="submit"
-        className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full transition duration-200"
+        disabled={loading}
+        className="bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white px-4 py-2 rounded w-full transition duration-200"
       >
-        Register
+        {loading ? "Submitting..." : "Register"}
       </button>
     </form>
   );

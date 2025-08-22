@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
@@ -8,6 +10,8 @@ const LoginForm = () => {
 
   const [message, setMessage] = useState(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const { login, loading } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,43 +27,18 @@ const LoginForm = () => {
     sendLogin();
   };
 
-  const sendLogin = () => {
+  const sendLogin = async () => {
     const { identifier, password } = formData;
-
-    fetch("http://localhost:3000/api/v1/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      credentials: "include", // important if you're using cookies
-      body: JSON.stringify({
-        userName: identifier.includes("@") ? undefined : identifier,
-        email: identifier.includes("@") ? identifier : undefined,
-        password,
-      }),
-    })
-      .then(async (res) => {
-        const data = await res.json();
-
-        setMessage(data.message || "Unexpected response");
-        setIsSuccess(res.ok && data.success);
-
-        if (res.ok && data.success) {
-          console.log("Tokens:", data.data.accessToken, data.data.refreshToken);
-          console.log("User Info:", data.data.user);
-
-          // Optional: Store tokens in localStorage if not using cookies
-          // localStorage.setItem("accessToken", data.data.accessToken);
-
-          // Reset form
-          setFormData({ identifier: "", password: "" });
-        }
-      })
-      .catch((error) => {
-        setMessage("Network error. Please try again later.");
-        setIsSuccess(false);
-        console.error("Network Error:", error);
-      });
+    const result = await login({ identifier, password });
+    if (result.ok) {
+      setIsSuccess(true);
+      setMessage("Login successful");
+      setFormData({ identifier: "", password: "" });
+      navigate("/");
+    } else {
+      setIsSuccess(false);
+      setMessage(result.error || "Login failed");
+    }
   };
 
   return (
@@ -101,9 +80,10 @@ const LoginForm = () => {
 
       <button
         type="submit"
-        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full transition duration-200"
+        disabled={loading}
+        className="bg-blue-500 hover:bg-blue-600 disabled:opacity-60 text-white px-4 py-2 rounded w-full transition duration-200"
       >
-        Login
+        {loading ? "Logging in..." : "Login"}
       </button>
     </form>
   );

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useAuth } from "../../context/AuthContext.jsx";
+import { apiJson } from "../../lib/api.js";
 
 const ChangePasswordForm = () => {
   const [currentPassword, setCurrentPassword] = useState("");
@@ -7,6 +9,8 @@ const ChangePasswordForm = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const { accessToken, refreshToken } = useAuth();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage(null);
@@ -14,24 +18,17 @@ const ChangePasswordForm = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/auth/change-password", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
+      const { ok, data } = await apiJson(
+        "/auth/change-password",
+        {
+          method: "PATCH",
+          body: { oldPassword: currentPassword, newPassword },
         },
-        body: JSON.stringify({
-          currentPassword,
-          newPassword,
-        }),
-      });
+        { accessToken, refreshToken }
+      );
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setMessage(data.message || "Password changed successfully");
-      } else {
-        setError(data.message || "Failed to change password");
-      }
+      if (ok) setMessage(data?.message || "Password changed successfully");
+      else setError(data?.message || "Failed to change password");
     } catch (err) {
       setError("Something went wrong. Please try again later.");
     } finally {

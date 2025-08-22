@@ -1,50 +1,39 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
 
-// Auth Components
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+// Pages/Components
+import Login from "./Pages/Login";
+import Register from "./Pages/Register";
 import ChangePasswordForm from "./components/Auth/ChangePasswordForm";
-
-// User Components
-import Profile from "./pages/Profile";
-import EditProfile from "./pages/EditProfile";
-
-// Room Components
-import Home from "./pages/Home";
-import Room from "./pages/Room";
-import CreateRoom from "./pages/CreateRoom";
-
-// Requests & Notifications
-import Requests from "./pages/Requests";
-import Notifications from "./pages/Notifications";
-
-// Optional: You can create a NotFound component if desired
-import NotFound from "./pages/NotFound";
+import Profile from "./Pages/Profile";
+import EditProfile from "./Pages/EditProfile";
+import Home from "./Pages/Home";
+import Room from "./Pages/Room";
+import CreateRoom from "./Pages/CreateRoom";
+import Requests from "./Pages/Requests";
+import Notifications from "./Pages/Notifications";
+import NotFound from "./Pages/NotFound";
+import MyRooms from "./Pages/MyRooms";
+import Messages from "./Pages/Messages";
 
 function App() {
   return (
     <Router>
+      <Navbar />
       <Routes>
-        {/* Auth Routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/change-password" element={<ChangePasswordForm />} />
-
-        {/* User Routes */}
         <Route path="/profile" element={<Profile />} />
         <Route path="/edit-profile" element={<EditProfile />} />
-
-        {/* Room Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/room/:roomId" element={<Room />} />
         <Route path="/create-room" element={<CreateRoom />} />
-
-        {/* Requests & Notifications */}
+        <Route path="/my-rooms" element={<MyRooms />} />
         <Route path="/requests" element={<Requests />} />
         <Route path="/notifications" element={<Notifications />} />
-
-        {/* Optional: 404 Not Found route */}
+        <Route path="/messages/:userId" element={<Messages />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
